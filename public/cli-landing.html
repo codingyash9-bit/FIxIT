@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixit CLI | Autonomous AI Debugger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-orange: #FF8C00;
+            --neon-red: #FF3131;
+            --oled-black: #050505;
+        }
+
+        body {
+            background-color: var(--oled-black);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* Custom Animated Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--neon-orange), var(--neon-red));
+            border-radius: 10px;
+            border: 2px solid var(--oled-black);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-orange);
+        }
+
+        @keyframes scroll-glow {
+            0%, 100% { filter: drop-shadow(0 0 5px var(--neon-orange)); }
+            50% { filter: drop-shadow(0 0 15px var(--neon-red)); }
+        }
+
+        .neon-orange { color: var(--neon-orange); }
+        .bg-neon-orange { background-color: var(--neon-orange); }
+        .border-neon-orange { border-color: var(--neon-orange); }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .terminal-window {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .glow-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-orange);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon-orange);
+            display: inline-block;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div id="canvas-container"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center border-b border-white/5 bg-black/50 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <div class="glow-dot"></div>
+            <span class="font-black uppercase tracking-tighter text-xl">Fixit <span class="neon-orange">CLI</span></span>
+        </div>
+        <div class="flex gap-8 items-center">
+            <a href="/" class="text-[10px] uppercase tracking-[0.4em] font-bold text-white/40 hover:text-white transition-colors">Back to Hub</a>
+            <a href="https://github.com" class="px-4 py-2 border border-white/10 rounded-sm text-[10px] uppercase font-bold tracking-widest hover:bg-white/5 transition-all">GitHub</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 pt-40 pb-20 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <!-- Hero Text -->
+            <div class="space-y-8">
+                <div class="inline-block px-3 py-1 bg-neon-orange/10 border border-neon-orange/20 rounded-full">
+                    <span class="text-[10px] font-bold uppercase tracking-[0.3em] neon-orange">Autonomous SRE Layer</span>
+                </div>
+                <h1 class="text-7xl font-black uppercase tracking-tighter leading-[0.9]">
+                    Debug at the <br>
+                    <span class="neon-orange">Speed of Thought.</span>
+                </h1>
+                <p class="text-white/60 text-lg max-w-md leading-relaxed">
+                    Fixit CLI is a terminal-based autonomous agent that detects crashes, analyzes root causes, and applies surgical patches in real-time.
+                </p>
+
+                <!-- Install Command -->
+                <div class="space-y-4">
+                    <label class="text-[10px] uppercase font-bold tracking-[0.3em] text-white/40">Quick Install</label>
+                    <div class="terminal-window p-4 flex items-center justify-between group">
+                        <code class="mono text-neon-orange text-sm">npm install -g hackathon-ai-fixit</code>
+                        <button onclick="copyText('npm install -g hackathon-ai-fixit')" class="p-2 hover:bg-white/5 rounded-sm transition-colors group-active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/40 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex gap-6 pt-4">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold">0.4s</span>
+                        <span class="text-[9px] uppercase tracking-widest text-white/40">Avg Fix Time</span>
+                    </div>
+                    <div class="w-[1px] h-10 bg-white/10"></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-bold">99.2%</span>
+                        <span class="text-[9px] uppercase tracking-widest text-white/40">Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terminal Preview -->
+            <div class="relative">
+                <div class="absolute -inset-4 bg-neon-orange/20 blur-3xl rounded-full opacity-20 animate-pulse"></div>
+                <div class="terminal-window overflow-hidden relative z-10">
+                    <div class="bg-white/5 px-4 py-3 flex items-center justify-between border-b border-white/5">
+                        <div class="flex gap-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-widest text-white/20 font-bold">fixit-session-01</span>
+                    </div>
+                    <div class="p-8 mono text-sm space-y-4 min-h-[400px]">
+                        <div class="text-white/40">$ fixit auto server.js</div>
+                        <div class="flex items-center gap-3">
+                            <span class="neon-orange">⠋</span>
+                            <span>Running server.js...</span>
+                        </div>
+                        <div class="text-red-500">✖ Script crashed! (ReferenceError: db is not defined)</div>
+                        <div class="flex items-center gap-3">
+                            <span class="neon-orange">⠙</span>
+                            <span>Analyzing crash with Sentinel AI...</span>
+                        </div>
+                        <div class="text-green-500">✔ Fix identified! (Import missing dependency)</div>
+                        <div class="flex items-center gap-3">
+                            <span class="neon-orange">⠹</span>
+                            <span>Applying surgical patch...</span>
+                        </div>
+                        <div class="text-green-500">✔ File updated.</div>
+                        <div class="text-blue-400">Re-running to verify fix...</div>
+                        <div class="text-green-500 font-bold">✔ SUCCESS: System stabilized.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // --- 3D Background (Neural Link) ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const orange = 0xFF8C00;
+
+        // Distorted Sphere
+        const geometry = new THREE.SphereGeometry(1.5, 64, 64);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: orange, 
+            emissive: orange, 
+            emissiveIntensity: 1,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.2
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Binary Particles
+        const particlesGroup = new THREE.Group();
+        for (let i = 0; i < 60; i++) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#FF8C00';
+            ctx.font = 'bold 48px monospace';
+            ctx.fillText(Math.round(Math.random()), 10, 50);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.6 });
+            const sprite = new THREE.Sprite(spriteMat);
+            
+            const phi = Math.acos(-1 + (2 * i) / 60);
+            const theta = Math.sqrt(60 * Math.PI) * phi;
+            sprite.position.set(
+                2.5 * Math.cos(theta) * Math.sin(phi),
+                2.5 * Math.sin(theta) * Math.sin(phi),
+                2.5 * Math.cos(phi)
+            );
+            sprite.scale.set(0.2, 0.2, 0.2);
+            particlesGroup.add(sprite);
+        }
+        scene.add(particlesGroup);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(orange, 2);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        camera.position.z = 8;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = Date.now() * 0.001;
+            
+            sphere.rotation.y += 0.005;
+            particlesGroup.rotation.y += 0.008;
+            particlesGroup.rotation.x += 0.002;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Copy Logic ---
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 right-8 bg-neon-orange text-black px-6 py-3 rounded-sm font-bold uppercase tracking-widest text-[10px] z-[100] animate-bounce';
+            toast.innerText = 'Command Copied';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+    </script>
+</body>
+</html>

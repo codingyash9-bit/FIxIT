@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-oled-black: #000000;
+  --color-deep-charcoal: #050505;
+  --color-neon-red: #FF3131;
+  --color-neon-orange: #FF8C00;
+  --color-electric-yellow: #FAFF00;
+  --color-slate-gray: #666666;
+  --color-saiyan-gold: #FFD700;
+  --color-saiyan-blue: #00BFFF;
+  --color-cursed-purple: #8A2BE2;
+  --color-cursed-black: #1A1A1A;
+}
+
+@layer base {
+  body {
+    @apply bg-oled-black text-white overflow-x-hidden selection:bg-neon-red/30;
+  }
+}
+
+/* Global Neon Glows */
+.neon-glow-red {
+  filter: drop-shadow(0 0 8px #FF3131);
+}
+
+.neon-glow-orange {
+  filter: drop-shadow(0 0 8px #FF8C00);
+}
+
+.neon-border-red {
+  @apply border-neon-red/30 shadow-[0_0_15px_rgba(255,49,49,0.1)];
+}
+
+.neon-border-orange {
+  @apply border-neon-orange/30 shadow-[0_0_15px_rgba(255,140,0,0.1)];
+}
+
+/* Glassmorphism */
+.glass-panel {
+  @apply bg-deep-charcoal/50 backdrop-blur-md border border-white/10;
+}
+
+/* Scanline Overlay */
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+}
+
+/* Animations */
+@keyframes glitch-1 {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes glitch-2 {
+  0% { transform: translate(0); }
+  20% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(-2px, 2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes scan {
+  0% { top: 0; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-glitch-1 {
+  animation: glitch-1 0.2s infinite;
+}
+
+.animate-glitch-2 {
+  animation: glitch-2 0.2s infinite;
+}
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FF3131;
+}
+
+.architectural-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.neon-ghost-button {
+  @apply px-6 py-2 border border-white/10 bg-transparent text-white font-medium transition-all duration-300 hover:border-neon-red hover:shadow-[0_0_15px_rgba(255,49,49,0.3)] hover:text-neon-red;
+}
+
+.neon-ghost-button-orange {
+  @apply px-6 py-2 border border-white/10 bg-transparent text-white font-medium transition-all duration-300 hover:border-neon-orange hover:shadow-[0_0_15px_rgba(255,140,0,0.3)] hover:text-neon-orange;
+}
+
+.tech-card {
+  @apply transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)];
+}
+
+.tech-card:hover {
+  @apply -translate-y-1 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border-white/20;
+}
+
+/* Ultimate Hover Effects */
+.hover-glow {
+  @apply transition-all duration-300;
+}
+
+.hover-glow:hover {
+  @apply shadow-[0_0_20px_rgba(255,255,255,0.1)] border-white/30;
+}
+
+.hover-scale {
+  @apply transition-transform duration-500 ease-out;
+}
+
+.hover-scale:hover {
+  @apply scale-[1.02];
+}
+
+button, a {
+  @apply transition-all duration-300 active:scale-95;
+}
+
+/* Bulb Glow Effect Overlay */
+.bulb-glow-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    circle 400px at var(--bulb-x, 50%) var(--bulb-y, 50%),
+    rgba(255, 140, 0, 0.08) 0%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+}
+
+.bulb-glow-overlay.error {
+  background: radial-gradient(
+    circle 400px at var(--bulb-x, 50%) var(--bulb-y, 50%),
+    rgba(255, 49, 49, 0.08) 0%,
+    transparent 100%
+  );
+}
+
+/* Shonen Anime Aura Animations */
+@keyframes aura-saiyan {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(0, 191, 255, 0.2);
+    border-color: rgba(255, 215, 0, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 80px rgba(0, 191, 255, 0.4);
+    border-color: rgba(0, 191, 255, 0.8);
+  }
+}
+
+@keyframes aura-cursed {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.4), 0 0 40px rgba(0, 0, 0, 0.6);
+    border-color: rgba(138, 43, 226, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.8), 0 0 80px rgba(255, 0, 0, 0.3);
+    border-color: rgba(255, 0, 0, 0.5);
+  }
+}
+
+.aura-saiyan-hover:hover {
+  animation: aura-saiyan 1.5s infinite ease-in-out;
+}
+
+.aura-cursed-hover:hover {
+  animation: aura-cursed 1.5s infinite ease-in-out;
+}
+
+.nav-link-glow {
+  position: relative;
+}
+
+.nav-link-glow::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #FF3131;
+  box-shadow: 0 0 10px #FF3131;
+  transition: width 0.3s ease;
+}
+
+/* Shonen Aura Animations */
+@keyframes saiyan-aura {
+  0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.4), inset 0 0 40px rgba(255, 215, 0, 0.4); }
+  100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.2); }
+}
+
+@keyframes cursed-aura {
+  0% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.4), 0 0 40px rgba(75, 0, 130, 0.2), inset 0 0 20px rgba(138, 43, 226, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(138, 43, 226, 0.8), 0 0 80px rgba(75, 0, 130, 0.4), inset 0 0 40px rgba(138, 43, 226, 0.4); }
+  100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.4), 0 0 40px rgba(75, 0, 130, 0.2), inset 0 0 20px rgba(138, 43, 226, 0.2); }
+}
+
+.aura-saiyan-active {
+  animation: saiyan-aura 1.5s infinite ease-in-out;
+  border-color: rgba(255, 215, 0, 0.8) !important;
+}
+
+.aura-cursed-active {
+  animation: cursed-aura 2s infinite ease-in-out;
+  border-color: rgba(138, 43, 226, 0.8) !important;
+}
+
+/* Hexagonal Clip Path */
+.hex-clip {
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/* Particle Background */
+.void-bg {
+  background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.void-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+  background-size: 550px 550px, 350px 350px, 250px 250px;
+  background-position: 0 0, 40px 60px, 130px 270px;
+  opacity: 0.1;
+  animation: stars-move 100s linear infinite;
+}
+
+@keyframes stars-move {
+  from { background-position: 0 0, 40px 60px, 130px 270px; }
+  to { background-position: 550px 550px, 390px 410px, 380px 520px; }
+}
+
+/* Power Level / Cursed Meter Animations */
+@keyframes power-pulse {
+  0%, 100% { opacity: 0.5; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.05); }
+}
+
+.animate-power-pulse {
+  animation: power-pulse 2s infinite ease-in-out;
+}
+
+.shonen-gradient-text {
+  background: linear-gradient(to right, #FFD700, #FF8C00, #FF3131);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cursed-gradient-text {
+  background: linear-gradient(to right, #8A2BE2, #4B0082, #000000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Contact Form Glows */
+.contact-input {
+  @apply bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 focus:ring-1 focus:ring-neon-red/20 transition-all duration-300;
+}
+
+.contact-label {
+  @apply text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2 block font-bold;
+}
